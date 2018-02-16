@@ -1,0 +1,14 @@
+1. Push project to server:
+
+    PRJ=${PWD##*/}; RDIR=/var/cache/git/$PRJ.git; RHOST=your.host SHARE_GROUP=your-group
+    git remote add origin ssh://$RHOST$RDIR
+    ssh $RHOST mkdir $RDIR\;git init --shared=group --bare $RDIR
+    ssh $RHOST chown -R :$SHARE_GROUP $RDIR\; chmod -R g+w $RDIR
+    git push -u origin master
+
+2. Connect to console with restart kemit or netcat after arduino flashing.
+   For example:
+
+    make PORT=/dev/ttyUSB1 console
+    or
+    make PORT=net:192.168.42.151:4001 console
