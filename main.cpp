@@ -1,5 +1,10 @@
 #include <arduino.h>
 
+#include <Adafruit_GFX.h>
+#include <Adafruit_PCD8544.h>
+#include <ClickEncoder.h>
+#include <TimerOne.h>
+
 #include <stdio.h>
 #include <util/delay.h>
 
