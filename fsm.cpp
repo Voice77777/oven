@@ -2,31 +2,65 @@
 #include <gui.h>
 #include <encoder.h>
 
+typedef enum {
+     E_NONE        = 1
+   , E_INIT        = 2
+   , E_FAIL        = 3
+   , E_CLICK       = 4
+   , E_UP          = 5
+   , E_DOWN        = 6
+} event_t;
+
+static int16_t encode_pos;
+
 void fsm_init()
 {
     encoder_init();
+    encode_pos = encoder->getValue();
 }
 
-int fsm_get_event()
+event_t encoder_event()
 {
-    encoder_read();
+    static int16_t value = 0;
+    event_t e = E_NONE;
 
-    ClickEncoder::Button b = encoder->getButton();
-    if (b != ClickEncoder::Open) {
-        switch (b) {
-            case ClickEncoder::Clicked:
-                middle = true;
-                break;
+    if (encoder->getButton() == ClickEncoder::Clicked)
+        e = E_CLICK;
+    else {
+        value += encoder->getValue();
+
+        if (value/2 > encode_pos) {
+            encode_pos = value/2;
+            e = E_DOWN;
+        } else if (value/2 < encode_pos) {
+            encode_pos = value/2;
+            e = E_UP;
         }
     }
+
+    return e;
+}
+
+event_t fsm_get_event()
+{
+    event_t e = E_NONE;
+
+    if ((e = encoder_event()) != E_NONE)
+        return e;
+
+    return e;
 }
 
 int fsm_step()
 {
-    fsm_get_event();
+    event_t event = E_NONE;
 
-    if (up && page == 1 ) {
-        up = false;
+    event = fsm_get_event();
+
+    if (event == E_NONE)
+        return 0;
+
+    if (event == E_UP && page == 1 ) {
         if(menuitem==2 && frame ==2)
         {
             frame--;
@@ -46,25 +80,21 @@ int fsm_step()
         {
             menuitem=1;
         }
-    } else if (up && page == 2 && menuitem==1) {
-        up = false;
+    } else if (event == E_UP && page == 2 && menuitem==1) {
         contrast--;
         display_set_contrast();
     }
-    else if (up && page == 2 && menuitem==2 ) {
-        up = false;
+    else if (event == E_UP && page == 2 && menuitem==2 ) {
         volume--;
     }
-    else if (up && page == 2 && menuitem==3 ) {
-        up = false;
+    else if (event == E_UP && page == 2 && menuitem==3 ) {
         selectedLanguage--;
         if(selectedLanguage == -1)
         {
             selectedLanguage = 2;
         }
     }
-    else if (up && page == 2 && menuitem==4 ) {
-        up = false;
+    else if (event == E_UP && page == 2 && menuitem==4 ) {
         selectedDifficulty--;
         if(selectedDifficulty == -1)
         {
@@ -72,10 +102,8 @@ int fsm_step()
         }
     }
 
-    if (down && page == 1) //We have turned the Rotary Encoder Clockwise
+    if (event == E_DOWN && page == 1) //We have turned the Rotary Encoder Clockwise
     {
-
-        down = false;
         if(menuitem==3 && lastMenuItem == 2)
         {
             frame ++;
@@ -94,25 +122,21 @@ int fsm_step()
             menuitem--;
         }
 
-    }else if (down && page == 2 && menuitem==1) {
-        down = false;
+    }else if (event == E_DOWN && page == 2 && menuitem==1) {
         contrast++;
         display_set_contrast();
     }
-    else if (down && page == 2 && menuitem==2) {
-        down = false;
+    else if (event == E_DOWN && page == 2 && menuitem==2) {
         volume++;
     }
-    else if (down && page == 2 && menuitem==3 ) {
-        down = false;
+    else if (event == E_DOWN && page == 2 && menuitem==3 ) {
         selectedLanguage++;
         if(selectedLanguage == 3)
         {
             selectedLanguage = 0;
         }
     }
-    else if (down && page == 2 && menuitem==4 ) {
-        down = false;
+    else if (event == E_DOWN && page == 2 && menuitem==4 ) {
         selectedDifficulty++;
         if(selectedDifficulty == 2)
         {
@@ -120,10 +144,8 @@ int fsm_step()
         }
     }
 
-    if (middle) //Middle Button is Pressed
+    if (event == E_CLICK) //Middle Button is Pressed
     {
-        middle = false;
-
         if (page == 1 && menuitem==5) // Backlight Control
         {
             if (backlight)
@@ -152,4 +174,5 @@ int fsm_step()
             page=1;
         }
     }
+    return 0;
 }
