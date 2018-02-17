@@ -13,7 +13,7 @@
 
 #include <config.h>
 
-#define SERIAL_SPEED     115200
+#define SERIAL_SPEED 57600
 
 int main()
 {

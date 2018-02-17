@@ -134,7 +134,7 @@ endif
 F_CPU = 16000000L
 
 FORMAT = ihex
-UPLOAD_RATE = 115200
+UPLOAD_RATE = 57600
 
 # Name of this Makefile (used for "make depend").
 MAKEFILE = Makefile
