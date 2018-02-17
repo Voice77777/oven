@@ -1,7 +1,8 @@
 #include <arduino.h>
 
-#include <Adafruit_GFX.h>
-#include <Adafruit_PCD8544.h>
+#include <gui.h>
+#include <fsm.h>
+
 #include <ClickEncoder.h>
 #include <TimerOne.h>
 
@@ -19,10 +20,16 @@ int main()
 {
     init();
     uart_init(SERIAL_SPEED);
-    logger_init(LOG_FATAL|LOG_ERROR|LOG_WARNING|LOG_INFO);
+    //logger_init(LOG_FATAL|LOG_ERROR|LOG_WARNING|LOG_INFO);
+    //logger(LOG_INFO, "Oven Control by Voice Arniman (c) 2018\n");
+
+    gui_init();
+    fsm_init();
 
     for (;;)
     {
+        gui_show_menu();
+        fsm_step();
 #ifdef UART_INPUT
         uart_handle();
 #endif
