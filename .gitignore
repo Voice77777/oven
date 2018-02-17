@@ -4,3 +4,5 @@ arc/
 *.elf
 .dep/
 config.h*
+.*.sw?
+tags
