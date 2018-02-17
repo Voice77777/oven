@@ -79,10 +79,10 @@ NETCAT = rlwrap -S "$$PORT> " nc
 # A minimized version of vfprintf() is available that only implements the very basic integer and
 # string conversion facilities, but only the # additional option can be specified using conversion
 # flags (these flags are parsed correctly from the format specification, but then simply ignored).
-#CFLAGS_PRINTF = -Wl,-u,vfprintf -lprintf_min
+CFLAGS_PRINTF = -Wl,-u,vfprintf -lprintf_min
 
 # If the full functionality including the floating point conversions is required, the following options should be used:
-CFLAGS_PRINTF = -Wl,-u,vfprintf -lprintf_flt -lm
+#CFLAGS_PRINTF = -Wl,-u,vfprintf -lprintf_flt -lm
 
 # We are building using arduino library. Which normally should be in the lib/arduino
 # subdirectory of our project.
