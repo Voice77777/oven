@@ -4,7 +4,7 @@
 
 void fsm_init()
 {
-
+    encoder_init();
 }
 
 int fsm_get_event()
