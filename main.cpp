@@ -30,11 +30,6 @@ int main()
     {
         gui_show_menu();
         fsm_step();
-#ifdef UART_INPUT
-        uart_handle();
-#endif
-        printf("alive\n");
-        delay(500);
     }
 
     return 0;
