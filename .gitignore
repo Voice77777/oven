@@ -1,0 +1,6 @@
+arc/
+*.hex
+*.o
+*.elf
+.dep/
+config.h*
