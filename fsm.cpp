@@ -60,41 +60,24 @@ int fsm_step()
     if (event == E_NONE)
         return 0;
 
-    if (event == E_UP && page == 1 ) {
-        if(menuitem==2 && frame ==2)
-        {
-            frame--;
-        }
-
-        if(menuitem==4 && frame ==4)
-        {
-            frame--;
-        }
-        if(menuitem==3 && frame ==3)
-        {
-            frame--;
-        }
+    if (event == E_UP && page == 1) {
         lastMenuItem = menuitem;
-        menuitem--;
-        if (menuitem==0)
-        {
-            menuitem=1;
-        }
-    } else if (event == E_UP && page == 2 && menuitem==1) {
+        gui_update_selected_menu(-1);
+    } else if (event == E_UP && page == 2 && menuitem==0) {
         contrast--;
         display_set_contrast();
     }
-    else if (event == E_UP && page == 2 && menuitem==2 ) {
+    else if (event == E_UP && page == 2 && menuitem==1 ) {
         volume--;
     }
-    else if (event == E_UP && page == 2 && menuitem==3 ) {
+    else if (event == E_UP && page == 2 && menuitem==2 ) {
         selectedLanguage--;
         if(selectedLanguage == -1)
         {
             selectedLanguage = 2;
         }
     }
-    else if (event == E_UP && page == 2 && menuitem==4 ) {
+    else if (event == E_UP && page == 2 && menuitem==3 ) {
         selectedDifficulty--;
         if(selectedDifficulty == -1)
         {
@@ -104,39 +87,24 @@ int fsm_step()
 
     if (event == E_DOWN && page == 1) //We have turned the Rotary Encoder Clockwise
     {
-        if(menuitem==3 && lastMenuItem == 2)
-        {
-            frame ++;
-        }else  if(menuitem==4 && lastMenuItem == 3)
-        {
-            frame ++;
-        }
-        else  if(menuitem==5 && lastMenuItem == 4 && frame!=4)
-        {
-            frame ++;
-        }
         lastMenuItem = menuitem;
-        menuitem++;
-        if (menuitem==7)
-        {
-            menuitem--;
-        }
+        gui_update_selected_menu(1);
 
-    }else if (event == E_DOWN && page == 2 && menuitem==1) {
+    }else if (event == E_DOWN && page == 2 && menuitem==0) {
         contrast++;
         display_set_contrast();
     }
-    else if (event == E_DOWN && page == 2 && menuitem==2) {
+    else if (event == E_DOWN && page == 2 && menuitem==1) {
         volume++;
     }
-    else if (event == E_DOWN && page == 2 && menuitem==3 ) {
+    else if (event == E_DOWN && page == 2 && menuitem==2 ) {
         selectedLanguage++;
         if(selectedLanguage == 3)
         {
             selectedLanguage = 0;
         }
     }
-    else if (event == E_DOWN && page == 2 && menuitem==4 ) {
+    else if (event == E_DOWN && page == 2 && menuitem==3 ) {
         selectedDifficulty++;
         if(selectedDifficulty == 2)
         {
@@ -146,27 +114,16 @@ int fsm_step()
 
     if (event == E_CLICK) //Middle Button is Pressed
     {
-        if (page == 1 && menuitem==5) // Backlight Control
+        if (page == 1 && menuitem==4) // Backlight Control
         {
-            if (backlight)
-            {
-                backlight = false;
-                menuItem5 = "Light: OFF";
-                display_backlight(DISPLAY_BL_OFF);
-            }
-            else
-            {
-                backlight = true;
-                menuItem5 = "Light: ON";
-                display_backlight(DISPLAY_BL_ON);
-            }
+            gui_toggle_backlight();
         }
 
-        if(page == 1 && menuitem ==6)// Reset
+        if(page == 1 && menuitem ==5)// Reset
         {
             gui_reset_default();
         }
-        else if (page == 1 && menuitem<=4) {
+        else if (page == 1 && menuitem<=3) {
             page=2;
         }
         else if (page == 2)

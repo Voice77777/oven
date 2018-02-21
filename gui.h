@@ -11,6 +11,10 @@ void gui_show_menu_item(String item, int position, boolean selected);
 void gui_show_menu_page_int(String menuItem, int value);
 void gui_show_menu_page_string(String menuItem, String value);
 
+void gui_update_selected_menu(int step);
+
+void gui_toggle_backlight();
+
 void gui_reset_default();
 
 extern int page;
