@@ -1,5 +1,6 @@
 #include <fsm.h>
 #include <gui.h>
+#include <menu.h>
 #include <encoder.h>
 
 typedef enum {
@@ -60,34 +61,16 @@ int fsm_step()
     if (event == E_NONE)
         return 0;
 
-    if (event == E_UP && page == 1) {
-        lastMenuItem = menuitem;
-        gui_update_selected_menu(-1);
-    } else if (event == E_UP && page == 2 && menuitem==0) {
-        contrast--;
-        display_set_contrast();
-    }
-    else if (event == E_UP && page == 2 && menuitem==1 ) {
-        volume--;
-    }
-    else if (event == E_UP && page == 2 && menuitem==2 ) {
-        selectedLanguage--;
-        if(selectedLanguage == -1)
-        {
-            selectedLanguage = 2;
-        }
-    }
-    else if (event == E_UP && page == 2 && menuitem==3 ) {
-        selectedDifficulty--;
-        if(selectedDifficulty == -1)
-        {
-            selectedDifficulty = 1;
+    if (event == E_UP) {
+        if (page == 1) {
+            gui_update_selected_menu(-1);
+        } else if (page == 2) {
+            menu_update_up_event(menuitem);
         }
     }
 
     if (event == E_DOWN && page == 1) //We have turned the Rotary Encoder Clockwise
     {
-        lastMenuItem = menuitem;
         gui_update_selected_menu(1);
 
     }else if (event == E_DOWN && page == 2 && menuitem==0) {
@@ -116,12 +99,12 @@ int fsm_step()
     {
         if (page == 1 && menuitem==4) // Backlight Control
         {
-            gui_toggle_backlight();
+            menu_backlight_toggle();
         }
 
         if(page == 1 && menuitem ==5)// Reset
         {
-            gui_reset_default();
+            menu_reset_default();
         }
         else if (page == 1 && menuitem<=3) {
             page=2;

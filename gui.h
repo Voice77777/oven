@@ -6,7 +6,7 @@
 void gui_init();
 
 void gui_show_menu();
-void gui_show_menu_item(String item, int position, boolean selected);
+void gui_show_menu_item(int item, int position, boolean selected);
 
 void gui_show_menu_page_int(String menuItem, int value);
 void gui_show_menu_page_string(String menuItem, String value);
