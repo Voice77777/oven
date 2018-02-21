@@ -174,5 +174,8 @@ int fsm_step()
             page=1;
         }
     }
+
+    gui_show_menu();
+
     return 0;
 }

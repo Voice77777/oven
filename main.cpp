@@ -26,9 +26,9 @@ int main()
     gui_init();
     fsm_init();
 
+    gui_show_menu();
     for (;;)
     {
-        gui_show_menu();
         fsm_step();
     }
 
