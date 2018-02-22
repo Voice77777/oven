@@ -77,23 +77,11 @@ int fsm_step()
        }
     }
 
-    if (event == E_CLICK) //Middle Button is Pressed
-    {
-        if (page == 1 && menuitem==4) // Backlight Control
-        {
-            menu_backlight_toggle();
-        }
-
-        if(page == 1 && menuitem ==5)// Reset
-        {
-            menu_reset_default();
-        }
-        else if (page == 1 && menuitem<=3) {
-            page=2;
-        }
-        else if (page == 2)
-        {
-            page=1;
+    if (event == E_CLICK) {
+        if (page == 1) {
+            menu_update_click_event(menuitem);
+        } else if (page == 2) {
+            page = 1;
         }
     }
 

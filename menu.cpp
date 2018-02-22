@@ -103,7 +103,19 @@ void menu_update_down_event(int menuitem)
             selectedDifficulty = 0;
         }
     }
+}
 
+void menu_update_click_event(int menuitem)
+{
+    if (menuitem==4) {
+        menu_backlight_toggle();
+    }
+    else if (menuitem==5) {
+        menu_reset_default();
+    }
+    else if (menuitem<=3) {
+        page = 2;
+    }
 }
 
 String menu_get_item_string(int menuitem)
