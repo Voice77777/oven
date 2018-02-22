@@ -80,6 +80,32 @@ void menu_update_up_event(int menuitem)
     }
 }
 
+void menu_update_down_event(int menuitem)
+{
+    if (menuitem==0) {
+        contrast++;
+        display_set_contrast();
+    }
+    else if (menuitem==1) {
+        volume++;
+    }
+    else if (menuitem==2) {
+        selectedLanguage++;
+        if(selectedLanguage == 3)
+        {
+            selectedLanguage = 0;
+        }
+    }
+    else if (menuitem==3) {
+        selectedDifficulty++;
+        if(selectedDifficulty == 2)
+        {
+            selectedDifficulty = 0;
+        }
+    }
+
+}
+
 String menu_get_item_string(int menuitem)
 {
     return menu_items[menuitem];
