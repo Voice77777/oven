@@ -30,11 +30,11 @@ event_t encoder_event()
     else {
         value += encoder->getValue();
 
-        if (value/2 > encode_pos) {
-            encode_pos = value/2;
+        if (value/3 > encode_pos) {
+            encode_pos = value/3;
             e = E_DOWN;
-        } else if (value/2 < encode_pos) {
-            encode_pos = value/2;
+        } else if (value/3 < encode_pos) {
+            encode_pos = value/3;
             e = E_UP;
         }
     }
@@ -61,10 +61,12 @@ int fsm_step()
     if (event == E_NONE)
         return 0;
 
+    /* вот тут надо подумать.. :) */
     if (event == E_UP) {
         if (page == 1) {
             gui_update_selected_menu(-1);
         } else if (page == 2) {
+            menu_handle_event(menuitem, GUI_EVENT_UP);
             menu_update_up_event(menuitem);
         }
     }
@@ -73,12 +75,14 @@ int fsm_step()
        if (page == 1) {
            gui_update_selected_menu(1);
        } else if (page == 2) {
+           menu_handle_event(menuitem, GUI_EVENT_DOWN);
            menu_update_down_event(menuitem);
        }
     }
 
     if (event == E_CLICK) {
         if (page == 1) {
+            menu_handle_event(menuitem, GUI_EVENT_CLICK);
             menu_update_click_event(menuitem);
         } else if (page == 2) {
             page = 1;

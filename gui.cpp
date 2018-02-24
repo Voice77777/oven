@@ -37,6 +37,7 @@ void gui_show_menu()
         display->display();
     }
     else if (page == 2) {
+        menu_handle_event(menuitem, GUI_EVENT_SHOW);
         menu_show_submenu(menuitem);
     }
 
