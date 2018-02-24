@@ -25,7 +25,7 @@ static int menu_handler_contrast  (struct menu_item_t* p, gui_event_t event);
 static int menu_handler_volume    (struct menu_item_t* p, gui_event_t event);
 static int menu_handler_language  (struct menu_item_t* p, gui_event_t event);
 static int menu_handler_difficulty(struct menu_item_t* p, gui_event_t event);
-
+static int menu_handler_reset     (struct menu_item_t* p, gui_event_t event);
 
 /* это массив из структур. мы сразу же его инифиализируем нужными значениями. NULL обозначает что мы пока еще
  * не сделали обработчик. и по мере имплементации будем его добавлять
@@ -36,7 +36,7 @@ struct menu_item_t menu_items_[] = {
     { "Language",       menu_handler_language},
     { "Difficulty",     menu_handler_difficulty},
     { "Light: ON",      menu_handler_backlight},
-    { "Reset",          NULL},
+    { "Reset",          menu_handler_reset},
 };
 const int menu_menuitem_number_ = (sizeof(menu_items_)/sizeof(menu_items_[0]));
 
@@ -163,6 +163,14 @@ int menu_handler_difficulty(struct menu_item_t* p, gui_event_t event)
     return 0;
 }
 
+int menu_handler_reset(struct menu_item_t* p, gui_event_t event)
+{
+    printf ("callback handler reset event: %d\n", event);
+    if (event == GUI_EVENT_CLICK)
+        menu_reset_default();
+    return 0;
+}
+
 void menu_backlight_toggle()
 {
     if (backlight)
@@ -204,12 +212,7 @@ void menu_update_down_event(int menuitem)
 
 void menu_update_click_event(int menuitem)
 {
-    if (menuitem==5) {
-        menu_reset_default();
-    }
-    else if (menuitem<=3) {
-        page = 2;
-    }
+    if (menuitem<=3) {page = 2;}
 }
 
 String menu_get_item_string(int menuitem)
