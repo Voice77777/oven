@@ -21,36 +21,43 @@ const int menu_menuitem_number = (sizeof(menu_items)/sizeof(menu_items[0]));
 
 int servo_speed = 0;
 
-boolean backlight = true;
-
 void menu_reset_default()
 {
     int i;
     for (i = 0; i < menu_menuitem_number; i++)
         menu_handle_event(i, GUI_EVENT_INIT);
 
-    backlight = true;
-    menu_items[4].name = "Light: ON";
-    display_backlight(DISPLAY_BL_ON);
-
     servo_speed = 0;
 }
 
 int menu_handler_backlight(struct menu_item_t* p, gui_event_t event)
 {
-    if (event == GUI_EVENT_CLICK) {
-        if (backlight)
-        {
-            backlight = false;
-            p->name = "Light: OFF";
-            display_backlight(DISPLAY_BL_OFF);
-        }
-        else
-        {
+    static boolean backlight = true;
+
+    switch (event) {
+        case GUI_EVENT_INIT:
             backlight = true;
             p->name = "Light: ON";
             display_backlight(DISPLAY_BL_ON);
-        }
+            break;
+
+        case GUI_EVENT_CLICK:
+            if (backlight)
+            {
+                backlight = false;
+                p->name = "Light: OFF";
+                display_backlight(DISPLAY_BL_OFF);
+            }
+            else
+            {
+                backlight = true;
+                p->name = "Light: ON";
+                display_backlight(DISPLAY_BL_ON);
+            }
+            break;
+
+        default:
+            break;
     }
     return 0;
 }
