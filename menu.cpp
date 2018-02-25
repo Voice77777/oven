@@ -19,15 +19,11 @@ struct menu_item_t menu_items[] = {
 };
 const int menu_menuitem_number = (sizeof(menu_items)/sizeof(menu_items[0]));
 
-int servo_speed = 0;
-
 void menu_reset_default()
 {
     int i;
     for (i = 0; i < menu_menuitem_number; i++)
         menu_handle_event(i, GUI_EVENT_INIT);
-
-    servo_speed = 0;
 }
 
 int menu_handler_backlight(struct menu_item_t* p, gui_event_t event)
@@ -188,7 +184,12 @@ int menu_handler_difficulty(struct menu_item_t* p, gui_event_t event)
 
 static int menu_handler_ctrl_servo(struct menu_item_t* p, gui_event_t event)
 {
+    static int servo_speed = 0;
+
     switch (event) {
+        case GUI_EVENT_INIT:
+            servo_speed = 0;
+            break;
         case GUI_EVENT_SHOW:
             gui_show_menu_page_int(p->name, servo_speed);
             break;
