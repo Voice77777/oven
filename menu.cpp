@@ -19,10 +19,6 @@ struct menu_item_t menu_items[] = {
 };
 const int menu_menuitem_number = (sizeof(menu_items)/sizeof(menu_items[0]));
 
-String difficulty[2] = { "EASY", "HARD" };
-const int menu_difficulty_number = (sizeof(difficulty)/sizeof(difficulty[0]));
-int selectedDifficulty = 0;
-
 int servo_speed = 0;
 
 boolean backlight = true;
@@ -32,8 +28,6 @@ void menu_reset_default()
     int i;
     for (i = 0; i < menu_menuitem_number; i++)
         menu_handle_event(i, GUI_EVENT_INIT);
-
-    selectedDifficulty = 0;
 
     backlight = true;
     menu_items[4].name = "Light: ON";
@@ -153,7 +147,15 @@ int menu_handler_language(struct menu_item_t* p, gui_event_t event)
 
 int menu_handler_difficulty(struct menu_item_t* p, gui_event_t event)
 {
+    String difficulty[2] = { "EASY", "HARD" };
+    const int menu_difficulty_number = (sizeof(difficulty)/sizeof(difficulty[0]));
+    static int selectedDifficulty = 0;
+
     switch (event) {
+        case GUI_EVENT_INIT:
+            selectedDifficulty = 0;
+            break;
+
         case GUI_EVENT_SHOW:
             gui_show_menu_page_string(p->name, difficulty[selectedDifficulty]);
             break;
