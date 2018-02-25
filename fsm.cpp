@@ -30,11 +30,11 @@ event_t encoder_event()
     else {
         value += encoder->getValue();
 
-        if (value/3 > encode_pos) {
-            encode_pos = value/3;
+        if (value / 3 > encode_pos) {
+            encode_pos = value / 3;
             e = E_DOWN;
-        } else if (value/3 < encode_pos) {
-            encode_pos = value/3;
+        } else if (value / 3 < encode_pos) {
+            encode_pos = value / 3;
             e = E_UP;
         }
     }
