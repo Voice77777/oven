@@ -61,35 +61,19 @@ int fsm_step()
     if (event == E_NONE)
         return 0;
 
-    /* вот тут надо подумать.. :) */
     if (event == E_UP) {
-        if (page == 1) {
-            gui_update_selected_menu(-1);
-        } else if (page == 2) {
-            menu_handle_event(menuitem, GUI_EVENT_UP);
-            menu_update_up_event(menuitem);
-        }
+        gui_handle_event(GUI_EVENT_UP);
     }
 
     if (event == E_DOWN) {
-       if (page == 1) {
-           gui_update_selected_menu(1);
-       } else if (page == 2) {
-           menu_handle_event(menuitem, GUI_EVENT_DOWN);
-           menu_update_down_event(menuitem);
-       }
+        gui_handle_event(GUI_EVENT_DOWN);
     }
 
     if (event == E_CLICK) {
-        if (page == 1) {
-            menu_handle_event(menuitem, GUI_EVENT_CLICK);
-            menu_update_click_event(menuitem);
-        } else if (page == 2) {
-            page = 1;
-        }
+        gui_handle_event(GUI_EVENT_CLICK);
     }
 
-    gui_show_menu();
+    gui_handle_event(GUI_EVENT_SHOW);
 
     return 0;
 }

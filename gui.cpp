@@ -9,6 +9,43 @@ void gui_init()
     display_init();
 }
 
+void gui_handle_event(gui_event_t event)
+{
+    switch(event) {
+        case GUI_EVENT_INIT:
+            break;
+
+        case GUI_EVENT_SHOW:
+            gui_show_menu();
+            break;
+
+        case GUI_EVENT_UP:
+            if (page == 1) {
+                gui_update_selected_menu(-1);
+            } else if (page == 2) {
+                menu_handle_event(menuitem, GUI_EVENT_UP);
+            }
+            break;
+
+        case GUI_EVENT_DOWN:
+            if (page == 1) {
+                gui_update_selected_menu(1);
+            } else if (page == 2) {
+                menu_handle_event(menuitem, GUI_EVENT_DOWN);
+            }
+            break;
+
+        case GUI_EVENT_CLICK:
+            if (page == 1) {
+                page = menu_get_item_menu_level(menuitem);
+                menu_handle_event(menuitem, GUI_EVENT_CLICK);
+            } else if (page == 2) {
+                page = 1;
+            }
+            break;
+    }
+}
+
 void gui_show_menu()
 {
     if (page == 1)
@@ -38,7 +75,6 @@ void gui_show_menu()
     }
     else if (page == 2) {
         menu_handle_event(menuitem, GUI_EVENT_SHOW);
-        menu_show_submenu(menuitem);
     }
 
 }

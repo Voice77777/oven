@@ -1,8 +1,6 @@
 #include <display.h>
 
-boolean backlight = true;
-int contrast      = 60;
-int volume        = 50;
+
 
 Adafruit_PCD8544 display_static = Adafruit_PCD8544(9, 8, 7, 6, 5);
 Adafruit_PCD8544* display;
@@ -19,12 +17,12 @@ Adafruit_PCD8544* display_init()
 
     display->begin();
     display->clearDisplay();
-    display_set_contrast();
+    display_set_contrast(60);
 
     return display;
 }
 
-void display_set_contrast()
+void display_set_contrast(int contrast)
 {
     display->setContrast(contrast);
     display->display();
