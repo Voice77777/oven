@@ -1,4 +1,5 @@
 #include <menu.h>
+#include <servo.h>
 
 static int menu_handler_backlight (struct menu_item_t* p, gui_event_t event);
 static int menu_handler_contrast  (struct menu_item_t* p, gui_event_t event);
@@ -19,7 +20,12 @@ struct menu_item_t menu_items[] = {
 };
 const int menu_menuitem_number = (sizeof(menu_items)/sizeof(menu_items[0]));
 
-void menu_reset_default()
+void menu_init()
+{
+    menu_set_defaults();
+}
+
+void menu_set_defaults()
 {
     int i;
     for (i = 0; i < menu_menuitem_number; i++)
@@ -90,7 +96,8 @@ int menu_handler_contrast(struct menu_item_t* p, gui_event_t event)
 
 int menu_handler_volume(struct menu_item_t* p, gui_event_t event)
 {
-    static int volume        = 50;
+    static int volume = 50;
+
     switch (event) {
         case GUI_EVENT_INIT:
             volume = 50;
@@ -184,23 +191,36 @@ int menu_handler_difficulty(struct menu_item_t* p, gui_event_t event)
 
 static int menu_handler_ctrl_servo(struct menu_item_t* p, gui_event_t event)
 {
-    static int servo_speed = 0;
+    static int pos = 0;
+    static bool initialized = 0;
 
     switch (event) {
         case GUI_EVENT_INIT:
-            servo_speed = 0;
+            pos = 0;
+            if (!initialized) {
+                initialized = 1;
+                servo_init();
+            }
             break;
+
         case GUI_EVENT_SHOW:
-            gui_show_menu_page_int(p->name, servo_speed);
+            gui_show_menu_page_int(p->name, pos);
             break;
+
         case GUI_EVENT_UP:
-            servo_speed++;
-            //servo_set_speed(servo_speed);
+            pos += 10;
+            if (pos >= 180)
+                pos = 180;
+            servo_set_pos(pos);
             break;
+
         case GUI_EVENT_DOWN:
-            servo_speed--;
-            //servo_set_speed(servo_speed);
+            pos -= 10;
+            if (pos < 0)
+                pos = 0;
+            servo_set_pos(pos);
             break;
+
         default:
             break;
     }
@@ -210,7 +230,7 @@ static int menu_handler_ctrl_servo(struct menu_item_t* p, gui_event_t event)
 int menu_handler_reset(struct menu_item_t* p, gui_event_t event)
 {
     if (event == GUI_EVENT_CLICK)
-        menu_reset_default();
+        menu_set_defaults();
     return 0;
 }
 

@@ -3,9 +3,10 @@
 
 #include <gui.h>
 
-void menu_reset_default();
+void menu_init();
+void menu_set_defaults();
 
-/* FIXME: убрать? */
+/* FIXME: remove? */
 String menu_get_item_string(int menuitem);
 int menu_get_item_menu_level(int menuitem);
 

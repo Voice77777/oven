@@ -7,6 +7,7 @@ int page = 1;           /* page == 1: main menu, page == 2: submenu */
 void gui_init()
 {
     display_init();
+    menu_init();
 }
 
 void gui_handle_event(gui_event_t event)

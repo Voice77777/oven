@@ -111,11 +111,11 @@ TARGET = main
 SRC = 
 CXXSRC = $(TARGET).cpp
 
-CXXSRC += display.cpp gui.cpp encoder.cpp fsm.cpp menu.cpp
+CXXSRC += display.cpp gui.cpp encoder.cpp fsm.cpp menu.cpp servo.cpp
 
-CLIBS   += -L$(ARDUINO_LIB_PATH)/Adafruit_GFX -L$(ARDUINO_LIB_PATH)/Adafruit_PCD8544_Nokia_5110_LCD -L$(ARDUINO_LIB_PATH)/SPI -L$(ARDUINO_LIB_PATH)/TimerOne -L$(ARDUINO_LIB_PATH)/ClickEncoder
-CINCS   += -I$(ARDUINO_INC_PATH)/Adafruit_GFX -I$(ARDUINO_INC_PATH)/Adafruit_PCD8544_Nokia_5110_LCD -I$(ARDUINO_INC_PATH)/SPI -I$(ARDUINO_INC_PATH)/TimerOne -I$(ARDUINO_INC_PATH)/ClickEncoder
-CXXINCS += -I$(ARDUINO_INC_PATH)/Adafruit_GFX -I$(ARDUINO_INC_PATH)/Adafruit_PCD8544_Nokia_5110_LCD -I$(ARDUINO_INC_PATH)/SPI -I$(ARDUINO_INC_PATH)/TimerOne -I$(ARDUINO_INC_PATH)/ClickEncoder
+CLIBS   += -L$(ARDUINO_LIB_PATH)/Adafruit_GFX -L$(ARDUINO_LIB_PATH)/Adafruit_PCD8544_Nokia_5110_LCD -L$(ARDUINO_LIB_PATH)/SPI -L$(ARDUINO_LIB_PATH)/TimerOne -L$(ARDUINO_LIB_PATH)/ClickEncoder -L$(ARDUINO_LIB_PATH)/SoftwareServo
+CINCS   += -I$(ARDUINO_INC_PATH)/Adafruit_GFX -I$(ARDUINO_INC_PATH)/Adafruit_PCD8544_Nokia_5110_LCD -I$(ARDUINO_INC_PATH)/SPI -I$(ARDUINO_INC_PATH)/TimerOne -I$(ARDUINO_INC_PATH)/ClickEncoder -I$(ARDUINO_INC_PATH)/SoftwareServo
+CXXINCS += -I$(ARDUINO_INC_PATH)/Adafruit_GFX -I$(ARDUINO_INC_PATH)/Adafruit_PCD8544_Nokia_5110_LCD -I$(ARDUINO_INC_PATH)/SPI -I$(ARDUINO_INC_PATH)/TimerOne -I$(ARDUINO_INC_PATH)/ClickEncoder -I$(ARDUINO_INC_PATH)/SoftwareServo
 
 ifeq ($(ARCH), nano)
 MCU = atmega328p
