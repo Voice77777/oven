@@ -7,8 +7,6 @@ Adafruit_PCD8544* display;
 
 Adafruit_PCD8544* display_init()
 {
-    // Download the latest Adafruit Library in order to use this constructor
-    //display = new Adafruit_PCD8544(9, 8, 7, 6, 5);
     display = &display_static;
 
     // For backlight control
@@ -17,7 +15,7 @@ Adafruit_PCD8544* display_init()
 
     display->begin();
     display->clearDisplay();
-    display_set_contrast(60);
+    display_set_contrast(50);
 
     return display;
 }

@@ -10,13 +10,13 @@ static int menu_handler_reset     (struct menu_item_t* p, gui_event_t event);
 static int menu_handler_ctrl_servo(struct menu_item_t* p, gui_event_t event);
 
 struct menu_item_t menu_items[] = {
-    { "Contrast",       menu_handler_contrast,   2},
-    { "Volume",         menu_handler_volume,     2},
-    { "Language",       menu_handler_language,   2},
-    { "Difficulty",     menu_handler_difficulty, 2},
-    { "Light: ON",      menu_handler_backlight,  1},
-    { "Ctrl Servo",     menu_handler_ctrl_servo, 2},
-    { "Reset",          menu_handler_reset,      1},
+    { "Контраст",       menu_handler_contrast,   2},
+    { "Громкость",      menu_handler_volume,     2},
+    { "Язык",           menu_handler_language,   2},
+    { "Сложность",      menu_handler_difficulty, 2},
+    { "Свет: Вкл",      menu_handler_backlight,  1},
+    { "Сервопривод",    menu_handler_ctrl_servo, 2},
+    { "Сброс",          menu_handler_reset,      1},
 };
 const int menu_menuitem_number = (sizeof(menu_items)/sizeof(menu_items[0]));
 
@@ -39,7 +39,7 @@ int menu_handler_backlight(struct menu_item_t* p, gui_event_t event)
     switch (event) {
         case GUI_EVENT_INIT:
             backlight = true;
-            p->name = "Light: ON";
+            p->name = "Свет: Вкл";
             display_backlight(DISPLAY_BL_ON);
             break;
 
@@ -47,13 +47,13 @@ int menu_handler_backlight(struct menu_item_t* p, gui_event_t event)
             if (backlight)
             {
                 backlight = false;
-                p->name = "Light: OFF";
+                p->name = "Свет: Выкл";
                 display_backlight(DISPLAY_BL_OFF);
             }
             else
             {
                 backlight = true;
-                p->name = "Light: ON";
+                p->name = "Свет: Вкл";
                 display_backlight(DISPLAY_BL_ON);
             }
             break;
@@ -66,11 +66,11 @@ int menu_handler_backlight(struct menu_item_t* p, gui_event_t event)
 
 int menu_handler_contrast(struct menu_item_t* p, gui_event_t event)
 {
-    static int contrast = 60;
+    static int contrast = 50;
 
     switch (event) {
         case GUI_EVENT_INIT:
-            contrast = 60;
+            contrast = 50;
             display_set_contrast(contrast);
             break;
 

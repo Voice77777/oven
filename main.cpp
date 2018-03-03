@@ -16,7 +16,7 @@
 
 #include <config.h>
 
-#define SERIAL_SPEED 57600
+#define SERIAL_SPEED 115200   //57600
 
 void main_isr()
 {
