@@ -58,13 +58,13 @@ SUBMODULES += canopen
 endif
 
 # Arduino platform.
-ARCH = nano
+ARCH = mega2560
 
 # The port Arduino is connected to.
 ifeq ($(ARCH), mega2560)
-PORT = /dev/ttyACM0
-else
 PORT = /dev/ttyUSB0
+else
+PORT = /dev/ttyACM0
 endif
 
 # netcat for console port redirecting
@@ -134,7 +134,7 @@ endif
 F_CPU = 16000000L
 
 FORMAT = ihex
-UPLOAD_RATE = 57600
+UPLOAD_RATE = 115200
 
 # Name of this Makefile (used for "make depend").
 MAKEFILE = Makefile
