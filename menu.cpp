@@ -3,17 +3,17 @@
 
 static int menu_handler_backlight (struct menu_item_t* p, gui_event_t event);
 static int menu_handler_contrast  (struct menu_item_t* p, gui_event_t event);
-static int menu_handler_volume    (struct menu_item_t* p, gui_event_t event);
+static int menu_handler_power     (struct menu_item_t* p, gui_event_t event);
 static int menu_handler_language  (struct menu_item_t* p, gui_event_t event);
-static int menu_handler_difficulty(struct menu_item_t* p, gui_event_t event);
+static int menu_handler_temperatur(struct menu_item_t* p, gui_event_t event);
 static int menu_handler_reset     (struct menu_item_t* p, gui_event_t event);
 static int menu_handler_ctrl_servo(struct menu_item_t* p, gui_event_t event);
 
 struct menu_item_t menu_items[] = {
     { "Контраст",       menu_handler_contrast,   2},
-    { "Громкость",      menu_handler_volume,     2},
+    { "Мощность",       menu_handler_power,      2},
+    { "Температура",    menu_handler_temperatur, 2},
     { "Язык",           menu_handler_language,   2},
-    { "Сложность",      menu_handler_difficulty, 2},
     { "Свет: Вкл",      menu_handler_backlight,  1},
     { "Сервопривод",    menu_handler_ctrl_servo, 2},
     { "Сброс",          menu_handler_reset,      1},
@@ -94,25 +94,29 @@ int menu_handler_contrast(struct menu_item_t* p, gui_event_t event)
     return 0;
 }
 
-int menu_handler_volume(struct menu_item_t* p, gui_event_t event)
+int menu_handler_power(struct menu_item_t* p, gui_event_t event)
 {
-    static int volume = 50;
+    static int power = 0;
 
     switch (event) {
         case GUI_EVENT_INIT:
-            volume = 50;
+            power = 0;
             break;
 
         case GUI_EVENT_SHOW:
-            gui_show_menu_page_int(p->name, volume);
+            gui_show_menu_page_int(p->name, power);
             break;
 
         case GUI_EVENT_UP:
-            volume--;
+            power--;
+            if (power < 0)
+                power = 0;
             break;
 
         case GUI_EVENT_DOWN:
-            volume++;
+            power++;
+            if (power > 10)
+                power = 10;
             break;
 
         default:
@@ -155,37 +159,34 @@ int menu_handler_language(struct menu_item_t* p, gui_event_t event)
     return 0;
 }
 
-int menu_handler_difficulty(struct menu_item_t* p, gui_event_t event)
+int menu_handler_temperatur(struct menu_item_t* p, gui_event_t event)
 {
-    String difficulty[2] = { "EASY", "HARD" };
-    const int menu_difficulty_number = (sizeof(difficulty)/sizeof(difficulty[0]));
-    static int selectedDifficulty = 0;
+    static int temperatur = 40;
 
     switch (event) {
         case GUI_EVENT_INIT:
-            selectedDifficulty = 0;
+            temperatur = 40;
             break;
 
         case GUI_EVENT_SHOW:
-            gui_show_menu_page_string(p->name, difficulty[selectedDifficulty]);
+            gui_show_menu_page_int(p->name, temperatur);
             break;
 
         case GUI_EVENT_UP:
-            selectedDifficulty--;
-            if(selectedDifficulty == -1)
-                selectedDifficulty = menu_difficulty_number - 1;
+            temperatur--;
+            if (temperatur < 40)
+                temperatur = 40;
             break;
 
         case GUI_EVENT_DOWN:
-            selectedDifficulty++;
-            if(selectedDifficulty == menu_difficulty_number)
-                selectedDifficulty = 0;
+            temperatur++;
+            if (temperatur > 400)
+                temperatur = 400;
             break;
 
         default:
             break;
     }
-
     return 0;
 }
 
@@ -208,16 +209,16 @@ static int menu_handler_ctrl_servo(struct menu_item_t* p, gui_event_t event)
             break;
 
         case GUI_EVENT_UP:
-            pos += 10;
-            if (pos >= 180)
-                pos = 180;
+            pos -= 10;
+            if (pos < 0)
+                pos = 0;
             servo_set_pos(pos);
             break;
 
         case GUI_EVENT_DOWN:
-            pos -= 10;
-            if (pos < 0)
-                pos = 0;
+            pos += 10;
+            if (pos >= 180)
+                pos = 180;
             servo_set_pos(pos);
             break;
 
