@@ -100,7 +100,7 @@ void gui_show_menu_page_int(String menuItem, int value)
     display->print(menuItem);
     display->drawFastHLine(0,10,83,BLACK);
     display->setCursor(5, 15);
-    display->print("Значение");
+    display->print("Значення");
     display->setTextSize(2);
     display->setCursor(5, 25);
     display->print(value);
@@ -117,7 +117,7 @@ void gui_show_menu_page_string(String menuItem, String value)
     display->print(menuItem);
     display->drawFastHLine(0,10,83,BLACK);
     display->setCursor(5, 15);
-    display->print("Значение");
+    display->print("Значення");
     display->setTextSize(2);
     display->setCursor(5, 25);
     display->print(value);

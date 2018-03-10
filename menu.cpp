@@ -1,6 +1,14 @@
 #include <menu.h>
 #include <servo.h>
 
+#define POW_MIN 0
+#define POW_MAX 10
+#define POS_MIN 0
+#define POS_MAX 180
+#define POS_STEP 10
+#define TEMPER_MIN 40
+#define TEMPER_MAX 400
+
 static int menu_handler_backlight (struct menu_item_t* p, gui_event_t event);
 static int menu_handler_contrast  (struct menu_item_t* p, gui_event_t event);
 static int menu_handler_power     (struct menu_item_t* p, gui_event_t event);
@@ -11,12 +19,12 @@ static int menu_handler_ctrl_servo(struct menu_item_t* p, gui_event_t event);
 
 struct menu_item_t menu_items[] = {
     { "Контраст",       menu_handler_contrast,   2},
-    { "Мощность",       menu_handler_power,      2},
+    { "Потужнысть",     menu_handler_power,      2},
     { "Температура",    menu_handler_temperatur, 2},
-    { "Язык",           menu_handler_language,   2},
-    { "Свет: Вкл",      menu_handler_backlight,  1},
+    { "Мова",           menu_handler_language,   2},
+    { "Свытло: Вм",     menu_handler_backlight,  1},
     { "Сервопривод",    menu_handler_ctrl_servo, 2},
-    { "Сброс",          menu_handler_reset,      1},
+    { "Скидання",       menu_handler_reset,      1},
 };
 const int menu_menuitem_number = (sizeof(menu_items)/sizeof(menu_items[0]));
 
@@ -39,7 +47,7 @@ int menu_handler_backlight(struct menu_item_t* p, gui_event_t event)
     switch (event) {
         case GUI_EVENT_INIT:
             backlight = true;
-            p->name = "Свет: Вкл";
+            p->name = "Свытло: Вм";
             display_backlight(DISPLAY_BL_ON);
             break;
 
@@ -47,13 +55,13 @@ int menu_handler_backlight(struct menu_item_t* p, gui_event_t event)
             if (backlight)
             {
                 backlight = false;
-                p->name = "Свет: Выкл";
+                p->name = "Свытло: Вым";
                 display_backlight(DISPLAY_BL_OFF);
             }
             else
             {
                 backlight = true;
-                p->name = "Свет: Вкл";
+                p->name = "Свытло: Вм";
                 display_backlight(DISPLAY_BL_ON);
             }
             break;
@@ -96,11 +104,11 @@ int menu_handler_contrast(struct menu_item_t* p, gui_event_t event)
 
 int menu_handler_power(struct menu_item_t* p, gui_event_t event)
 {
-    static int power = 0;
+    static int power = POS_MIN;
 
     switch (event) {
         case GUI_EVENT_INIT:
-            power = 0;
+            power = POW_MIN;
             break;
 
         case GUI_EVENT_SHOW:
@@ -109,14 +117,14 @@ int menu_handler_power(struct menu_item_t* p, gui_event_t event)
 
         case GUI_EVENT_UP:
             power--;
-            if (power < 0)
-                power = 0;
+            if (power < POW_MIN)
+                power = POW_MIN;
             break;
 
         case GUI_EVENT_DOWN:
             power++;
-            if (power > 10)
-                power = 10;
+            if (power > POW_MAX)
+                power = POW_MAX;
             break;
 
         default:
@@ -161,11 +169,11 @@ int menu_handler_language(struct menu_item_t* p, gui_event_t event)
 
 int menu_handler_temperatur(struct menu_item_t* p, gui_event_t event)
 {
-    static int temperatur = 40;
+    static int temperatur = TEMPER_MIN;
 
     switch (event) {
         case GUI_EVENT_INIT:
-            temperatur = 40;
+            temperatur = TEMPER_MIN;
             break;
 
         case GUI_EVENT_SHOW:
@@ -174,14 +182,14 @@ int menu_handler_temperatur(struct menu_item_t* p, gui_event_t event)
 
         case GUI_EVENT_UP:
             temperatur--;
-            if (temperatur < 40)
-                temperatur = 40;
+            if (temperatur < TEMPER_MIN)
+                temperatur = TEMPER_MIN;
             break;
 
         case GUI_EVENT_DOWN:
             temperatur++;
-            if (temperatur > 400)
-                temperatur = 400;
+            if (temperatur > TEMPER_MAX)
+                temperatur = TEMPER_MAX;
             break;
 
         default:
@@ -192,12 +200,12 @@ int menu_handler_temperatur(struct menu_item_t* p, gui_event_t event)
 
 static int menu_handler_ctrl_servo(struct menu_item_t* p, gui_event_t event)
 {
-    static int pos = 0;
+    static int pos = POS_MIN;
     static bool initialized = 0;
 
     switch (event) {
         case GUI_EVENT_INIT:
-            pos = 0;
+            pos = POS_MIN;
             if (!initialized) {
                 initialized = 1;
                 servo_init();
@@ -209,16 +217,16 @@ static int menu_handler_ctrl_servo(struct menu_item_t* p, gui_event_t event)
             break;
 
         case GUI_EVENT_UP:
-            pos -= 10;
-            if (pos < 0)
-                pos = 0;
+            pos -= POS_STEP;
+            if (pos < POS_MIN)
+                pos = POS_MIN;
             servo_set_pos(pos);
             break;
 
         case GUI_EVENT_DOWN:
-            pos += 10;
-            if (pos >= 180)
-                pos = 180;
+            pos += POS_STEP;
+            if (pos >= POS_MAX)
+                pos = POS_MAX;
             servo_set_pos(pos);
             break;
 
